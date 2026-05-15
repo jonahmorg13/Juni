@@ -18,6 +18,14 @@ enum class ChatIntent(val label: String, val short: String) {
         label = "transcribe",
         short = "Verbatim transcription of the attached photo.",
     ),
+    MATH(
+        label = "math",
+        short = "Transcribe math in the attached photo as LaTeX in a new note.",
+    ),
+    TABLE(
+        label = "table",
+        short = "Transcribe a table in the attached photo as Markdown in a new note.",
+    ),
     DAILY_NOTE(
         label = "daily note",
         short = "Open or create today's daily note.",
@@ -42,6 +50,22 @@ enum class ChatIntent(val label: String, val short: String) {
             "Transcribe the attached photo verbatim into a new vault note. Preserve the " +
                 "user's voice, idioms, and minor errors exactly — do not correct anything. " +
                 "Place it in the journal folder if one exists; otherwise ask. Do not embed " +
+                "the source image."
+        MATH ->
+            "Transcribe the math in the attached image into a new vault note as LaTeX. " +
+                "Use \$...\$ for inline math and \$\$...\$\$ on their own lines for display " +
+                "equations — Obsidian renders these via MathJax by default. Preserve every " +
+                "function, equation, derivation step, and label in source order; do not " +
+                "solve, simplify, or correct anything. Capture any title, problem number, " +
+                "page number, or surrounding prose as headings or text above the math. Do " +
+                "not embed the source image."
+        TABLE ->
+            "Transcribe the table in the attached image into a new vault note as a " +
+                "GitHub-Flavored Markdown table (pipes and a |---| separator row). Preserve " +
+                "column headers, row order, and cell contents exactly — do not reformat " +
+                "numbers, reorder rows, or merge cells the source kept separate. If a cell " +
+                "is unreadable, write [?] rather than guessing. Capture any title, caption, " +
+                "or source line as a heading or italic line above the table. Do not embed " +
                 "the source image."
         DAILY_NOTE -> {
             val today = LocalDate.now().toString()
