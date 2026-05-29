@@ -8,6 +8,20 @@ A bring-your-own-API-key Android agent for your Obsidian vault. Take a photo of 
 
 Pick **Claude**, **OpenAI**, **Gemini**, or **Ollama** — all four work. Every write to your vault is gated by an explicit approve/reject tap, with a diff preview before you commit.
 
+## Demos
+_Settings_
+https://github.com/user-attachments/assets/c9bd8ddc-f5f1-4717-a1d6-bfab33b397c4
+
+_Taking a picture of some code to put into my notes_
+https://github.com/user-attachments/assets/ddb14a55-5600-4668-80b9-68098b9e9bc9
+
+_Adding a todo_
+https://github.com/user-attachments/assets/633869bf-565c-4f19-8fa5-d76af24e9f48
+
+_A diagram, haiku, and a todo list_
+https://github.com/user-attachments/assets/7b25ff4f-b647-43d8-af1f-c5f06953c89a
+
+
 ## Highlights
 
 - **Local Obsidian vault** — pick the folder via Android's Storage Access Framework. Junie reads, searches, creates, edits, moves, and embeds attachments inside it. Hidden folders (`.trash`, `.obsidian`) are skipped.
