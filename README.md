@@ -10,7 +10,7 @@ Pick **Claude**, **OpenAI**, **Gemini**, or **Ollama** — all four work. Every 
 
 ## Demos
 _Settings_
-https://github.com/user-attachments/assets/c9bd8ddc-f5f1-4717-a1d6-bfab33b397c4
+<video src="https://github.com/user-attachments/assets/c9bd8ddc-f5f1-4717-a1d6-bfab33b397c4" width="640"></video>
 
 _Taking a picture of some code to put into my notes_
 https://github.com/user-attachments/assets/ddb14a55-5600-4668-80b9-68098b9e9bc9
