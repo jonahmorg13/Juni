@@ -235,6 +235,7 @@ class ChatViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
             ToolRegistry(
                 VaultTools.all(
                     vault = vault,
+                    index = app.vaultIndex,
                     attachmentStaging = attachmentStaging,
                     onRenameChat = { newTitle -> applyAgentRename(newTitle) },
                 ),

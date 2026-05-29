@@ -1,5 +1,6 @@
 package com.juni.app.domain.tools
 
+import com.juni.app.data.vault.VaultIndex
 import com.juni.app.data.vault.VaultRepository
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.add
@@ -21,16 +22,17 @@ object VaultTools {
 
     fun all(
         vault: VaultRepository,
+        index: VaultIndex,
         attachmentStaging: AttachmentStaging,
         onClarifyingQuestion: (question: String) -> Unit = {},
         onRenameChat: (newTitle: String) -> Unit = {},
     ): List<Tool> = listOf(
         listFiles(vault),
         readNote(vault),
-        createNote(vault),
-        editNote(vault),
-        moveNote(vault),
-        searchNotes(vault),
+        createNote(vault, index),
+        editNote(vault, index),
+        moveNote(vault, index),
+        searchNotes(index),
         saveAttachment(vault, attachmentStaging),
         askClarifyingQuestion(onClarifyingQuestion),
         renameChat(onRenameChat),
@@ -82,7 +84,7 @@ object VaultTools {
         }
     }
 
-    private fun createNote(vault: VaultRepository): Tool = object : Tool {
+    private fun createNote(vault: VaultRepository, index: VaultIndex): Tool = object : Tool {
         override val spec = ToolSpec(
             name = "create_note",
             description = "Create a new markdown file in the vault, or overwrite an existing one. " +
@@ -99,11 +101,12 @@ object VaultTools {
             val path = input.string("path") ?: return ToolResult("Missing 'path'.", isError = true)
             val content = input.string("content") ?: return ToolResult("Missing 'content'.", isError = true)
             vault.write(path, content)
+            index.upsertDoc(path, content)
             return ToolResult("Wrote $path (${content.length} chars).")
         }
     }
 
-    private fun editNote(vault: VaultRepository): Tool = object : Tool {
+    private fun editNote(vault: VaultRepository, index: VaultIndex): Tool = object : Tool {
         override val spec = ToolSpec(
             name = "edit_note",
             description = "Replace an exact substring in an existing note. The `find` text must match exactly " +
@@ -127,6 +130,7 @@ object VaultTools {
                 1 -> {
                     val updated = original.replace(find, replace)
                     vault.write(path, updated)
+                    index.upsertDoc(path, updated)
                     ToolResult("Edited $path.")
                 }
                 else -> ToolResult(
@@ -137,7 +141,7 @@ object VaultTools {
         }
     }
 
-    private fun moveNote(vault: VaultRepository): Tool = object : Tool {
+    private fun moveNote(vault: VaultRepository, index: VaultIndex): Tool = object : Tool {
         override val spec = ToolSpec(
             name = "move_note",
             description = "Rename or move a note to a new path within the vault.",
@@ -152,25 +156,29 @@ object VaultTools {
             val from = input.string("from") ?: return ToolResult("Missing 'from'.", isError = true)
             val to = input.string("to") ?: return ToolResult("Missing 'to'.", isError = true)
             val ok = vault.move(from, to)
+            if (ok) index.renamePath(from, to)
             return if (ok) ToolResult("Moved $from → $to.")
             else ToolResult("Move failed (source missing or destination unwritable).", isError = true)
         }
     }
 
-    private fun searchNotes(vault: VaultRepository): Tool = object : Tool {
+    private fun searchNotes(index: VaultIndex): Tool = object : Tool {
         override val spec = ToolSpec(
             name = "search_notes",
-            description = "Naive substring search across all .md files in the vault. " +
-                "Returns up to 50 hits; each line is `path :: snippet`. Case-insensitive.",
+            description = "Full-text search across all .md files in the vault. Space-separated words are " +
+                "treated as AND with prefix matching (e.g. `monarch but` matches notes containing words " +
+                "starting with `monarch` AND words starting with `but`). Searches both note bodies and " +
+                "path segments. Returns up to 50 hits; each line is `path :: snippet` with `[ ]` around " +
+                "matched terms.",
             inputSchema = objectSchema(
-                "query" to stringField("Substring to search for."),
+                "query" to stringField("Words to search for. Don't use FTS operators — just plain words."),
                 required = listOf("query"),
             ),
         )
 
         override suspend fun execute(input: JsonObject): ToolResult {
             val query = input.string("query") ?: return ToolResult("Missing 'query'.", isError = true)
-            val hits = vault.search(query)
+            val hits = index.search(query)
             val text = if (hits.isEmpty()) "(no hits)"
             else hits.joinToString("\n") { h -> "${h.relativePath} :: ${h.snippet}" }
             return ToolResult(text)

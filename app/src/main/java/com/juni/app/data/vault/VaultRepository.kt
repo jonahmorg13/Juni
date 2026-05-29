@@ -121,6 +121,22 @@ class VaultRepository(
 
     fun exists(relativePath: String): Boolean = resolve(relativePath) != null
 
+    /**
+     * Walks the whole vault once and returns (path, lastModified) for every `.md`
+     * file (dotfolders skipped). Cheap relative to reading content because each
+     * file only triggers a `name`/`isFile`/`lastModified` Binder call, not an
+     * `openInputStream`. The FTS sync diff uses this to decide which files
+     * actually need to be re-read.
+     */
+    suspend fun listAllMarkdown(): List<VaultFileInfo> = withContext(Dispatchers.IO) {
+        val out = mutableListOf<VaultFileInfo>()
+        walkMarkdown(root, "") { df, path ->
+            out += VaultFileInfo(relativePath = path, lastModified = df.lastModified())
+            true
+        }
+        out
+    }
+
     // ---------- internals ----------
 
     private fun resolve(relativePath: String): DocumentFile? {

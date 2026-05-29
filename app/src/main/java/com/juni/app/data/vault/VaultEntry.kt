@@ -12,3 +12,9 @@ data class VaultHit(
     val relativePath: String,
     val snippet: String,
 )
+
+/** (path, lastModified) for every markdown file under the vault; used by the FTS sync diff. */
+data class VaultFileInfo(
+    val relativePath: String,
+    val lastModified: Long,
+)
