@@ -4,9 +4,9 @@
 
 # Junie
 
-A bring-your-own-API-key Android agent for your Obsidian vault. Take a photo of a whiteboard and get a Mermaid diagram in a new note. Photograph a journal page and get it transcribed verbatim. Talk through a topic and have Junie file your notes for you. The vault stays local on the phone; Junie only ever calls the AI provider you've configured.
+Junie is a mobile AI Agent Android app that connects directly to your local obsidian vault. Think of Claude Code or Copilot but geared for an Obisidian vault instead of development. The reason I created this is because I like to take hand written notes, and I wanted a quick way to sync them with my Obsidian notes.
 
-Pick **Claude**, **OpenAI**, **Gemini**, or **Ollama** — all four work. Every write to your vault is gated by an explicit approve/reject tap, with a diff preview before you commit.
+Pick **Claude**, **OpenAI**, **Gemini**, or **Ollama**. All four work. Every write to your vault is gated by an explicit approve/reject tap, with a diff preview before you commit.
 
 ## Demos
 _Settings_
