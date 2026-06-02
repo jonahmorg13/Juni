@@ -4,7 +4,7 @@
 
 # Junie
 
-Junie is a mobile AI Agent Android app that connects directly to your local obsidian vault. Think of Claude Code or Copilot but geared for an Obisidian vault instead of development. The reason I created this is because I like to take hand written notes, and I wanted a quick way to sync them with my Obsidian notes.
+Junie is a mobile AI Agent Android app that connects directly to your local obsidian vault. Think of Claude Code or Copilot but geared for interacting with your Obisidian vault instead of your code. The reason I created this is because I like to take hand written notes, and I wanted a quick way to sync them with my Obsidian notes.
 
 Pick **Claude**, **OpenAI**, **Gemini**, or **Ollama**. All four work. Every write to your vault is gated by an explicit approve/reject tap, with a diff preview before you commit.
 
