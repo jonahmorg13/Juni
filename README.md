@@ -18,8 +18,11 @@ _Adding a todo_
 _A diagram, haiku, and a todo list_
 <video src="https://github.com/user-attachments/assets/7b25ff4f-b647-43d8-af1f-c5f06953c89a" width="640"></video>
 
-_Taking a picture of some code to put into my notes_
-<video src="https://github.com/user-attachments/assets/ddb14a55-5600-4668-80b9-68098b9e9bc9" width="640"></video>
+_Transcribing some math notes_
+<video src="https://github.com/user-attachments/assets/cdda043c-b808-4b79-8cc7-db32e55ae7fa" width="640"></video>
+
+
+
 
 ## Highlights
 
